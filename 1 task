@@ -1,0 +1,114 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.read_csv('kc_house_data.csv')
+
+# Задание 1: Анализ данных недвижимости
+
+# 1.1 Гистограмма распределения цен на недвижимость
+plt.figure(figsize=(10, 6))
+plt.hist(data['price'], bins=30, edgecolor='black')
+plt.title('Распределение цен на недвижимость')
+plt.xlabel('Цена (USD)')
+plt.ylabel('Количество домов')
+plt.grid(True)
+plt.show()
+
+# 1.2 Гистограмма распределения площади жилых помещений
+plt.figure(figsize=(10, 6))
+plt.hist(data['sqft_living'], bins=30, edgecolor='black')
+plt.title('Распределение жилой площади')
+plt.xlabel('Жилая площадь (sqft)')
+plt.ylabel('Количество домов')
+plt.grid(True)
+plt.show()
+
+# 1.3 Гистограмма распределения годов постройки
+plt.figure(figsize=(10, 6))
+plt.hist(data['yr_built'], bins=30, edgecolor='black')
+plt.title('Распределение года постройки')
+plt.xlabel('Год постройки')
+plt.ylabel('Количество домов')
+plt.grid(True)
+plt.show()
+
+# Задание 2: Анализ характеристик домов
+
+# 2.1 Столбчатая диаграмма для анализа наличия вида на набережную
+plt.figure(figsize=(8, 5))
+data['waterfront'].value_counts().plot(kind='bar', color=['skyblue', 'salmon'])
+plt.title('Распределение домов по наличию вида на набережную')
+plt.xlabel('Вид на набережную')
+plt.ylabel('Количество домов')
+plt.xticks([0, 1], ['Нет', 'Да'], rotation=0)
+plt.grid(axis='y')
+plt.show()
+
+# 2.2 Столбчатая диаграмма для анализа количества этажей
+plt.figure(figsize=(8, 5))
+data['floors'].value_counts().sort_index().plot(kind='bar', color='lightgreen')
+plt.title('Распределение этажей домов')
+plt.xlabel('Количество этажей')
+plt.ylabel('Количество домов')
+plt.grid(axis='y')
+plt.show()
+
+# 2.3 Столбчатая диаграмма для анализа состояния домов
+plt.figure(figsize=(8, 5))
+data['condition'].value_counts().sort_index().plot(kind='bar', color='coral')
+plt.title('Распределение состояния домов')
+plt.xlabel('Состояние дома')
+plt.ylabel('Количество домов')
+plt.grid(axis='y')
+plt.show()
+
+# Задание 3: Влияние характеристик на стоимость недвижимости
+
+# 3.1 Диаграмма рассеяния для количества спален и стоимости
+plt.figure(figsize=(12, 6))
+plt.scatter(data['bedrooms'], data['price'], alpha=0.5, color='blue')
+plt.title('Цена недвижимости в зависимости от количества спален')
+plt.xlabel('Количество спален')
+plt.ylabel('Цена (USD)')
+plt.grid(True)
+plt.show()
+
+# 3.2 Boxplot для состояния дома и его стоимости
+plt.figure(figsize=(12, 6))
+plt.boxplot([data[data['condition'] == i]['price'] for i in sorted(data['condition'].unique())],
+            labels=sorted(data['condition'].unique()))
+plt.title('Цена недвижимости в зависимости от состояния')
+plt.xlabel('Состояние дома')
+plt.ylabel('Цена (USD)')
+plt.grid(True)
+plt.show()
+
+# 3.3 Boxplot для этажности и стоимости
+plt.figure(figsize=(12, 6))
+plt.boxplot([data[data['floors'] == i]['price'] for i in sorted(data['floors'].unique())],
+            labels=sorted(data['floors'].unique()))
+plt.title('Цена недвижимости в зависимости от этажности')
+plt.xlabel('Количество этажей')
+plt.ylabel('Цена (USD)')
+plt.grid(True)
+plt.show()
+
+# 3.4 Boxplot для вида на набережную и стоимости
+plt.figure(figsize=(12, 6))
+data.boxplot(column='price', by='waterfront', grid=False)
+plt.title('Цена недвижимости в зависимости от наличия вида на набережную')
+plt.suptitle('')
+plt.xlabel('Вид на набережную')
+plt.ylabel('Цена (USD)')
+plt.xticks([1, 2], ['Нет', 'Да'])
+plt.grid(True)
+plt.show()
+
+# 3.5 Диаграмма рассеяния для жилой площади и стоимости
+plt.figure(figsize=(12, 6))
+plt.scatter(data['sqft_living'], data['price'], alpha=0.5, color='green')
+plt.title('Цена недвижимости в зависимости от площади жилой зоны')
+plt.xlabel('Жилая площадь (sqft)')
+plt.ylabel('Цена (USD)')
+plt.grid(True)
+plt.show()
